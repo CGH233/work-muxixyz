@@ -20,19 +20,16 @@ schemes:
 
 tags:
   - name: folder
-	  description: 文件夹　
+	description: 文件夹　
 
   - name: file
     description: 文件
   
   - name: doc
-	  description: 文档
+	description: 文档
 
   - name: recyclebin
     description: 回收站
-  
-  - name: plan
-    description: 进度
 
 ### tag end ###
 
@@ -76,32 +73,32 @@ paths:
                 item:
                   type: integer
   /project/{pid}/folder/{floor}/{foid}/new/:
-	  post:
-	    tags:
-		  - folder
-	    summary: build a new folder
-        description: admin can build a folder by this api
-        produces: 
-          - application/json
-        parameters:
-          - in: header
-            name: token
-            description: token to verify admin
-            required: true
-            type: string
-            name: POSTdata
-            in: body
-            description: required information to post a new folder
-            schema: 
-              required: 
-                - username
-                - foldername
-              properties:
-                username:
-                  type: string
-                foldername:
-                  type: string
-        responses:
+	post:
+      tags:
+	    - folder
+	  summary: build a new folder
+      description: admin can build a folder by this api
+      produces: 
+        - application/json
+      parameters:
+        - in: header
+          name: token
+          description: token to verify admin
+          required: true
+          type: string
+          name: POSTdata
+          in: body
+          description: required information to post a new folder
+          schema: 
+            required: 
+            - username
+            - foldername
+            properties:
+              username:
+                type: string
+              foldername:
+                type: string
+      responses:
           200:
             description: OK
           401:
@@ -309,37 +306,37 @@ paths:
 	    tags:
 		  - doc
 	    summary: build a new doc
-        description: admin can build a doc by this api
-        produces: 
-          - application/json
-        parameters:
-          - in: header
-            name: token
-            description: token to verify admin
-            required: true
-            type: string
-            name: POSTdata
-            in: body
-            description: required information to post a new doc
-            schema: 
-              required: 
-                - username
-                - docname
-                - content
-              properties:
-                username:
-                  type: string
-                docname:
-                  type: string
-                content:
-                  type: string
-        responses:
-          200:
-            description: OK
-          401:
-            description: verify failed     
-          403:
-            description: insufficient permissions
+      description: admin can build a doc by this api
+      produces: 
+        - application/json
+      parameters:
+        - in: header
+          name: token
+          description: token to verify admin
+          required: true
+          type: string
+          name: POSTdata
+          in: body
+          description: required information to post a new doc
+          schema: 
+            required: 
+              - username
+              - docname
+              - content
+            properties:
+              username:
+                type: string
+              docname:
+                type: string
+              content:
+                type: string
+      responses:
+        200:
+          description: OK
+        401:
+          description: verify failed     
+        403:
+          description: insufficient permissions
    /project/{pid}/folder/{floor}/{foid}/doc/{docid}/view/:
     get:
       tags:
@@ -584,34 +581,34 @@ paths:
 	    tags:
 		  - doc
 	    summary: make a comment to a doc
-        description: admin can make a comment by this api
-        produces: 
-          - application/json
-        parameters:
-          - in: header
-            name: token
-            description: token to verify admin
-            required: true
-            type: string
-            name: POSTdata
-            in: body
-            description: required information to post a new doc
-            schema: 
-              required: 
-                - username
-                - comment
-              properties:
-                username:
-                  type: string
-                comment:
-                  type: string
-        responses:
-          200:
-            description: OK
-          401:
-            description: verify failed     
-          403:
-            description: insufficient permissions          
+      description: admin can make a comment by this api
+      produces: 
+        - application/json
+      parameters:
+        - in: header
+          name: token
+          description: token to verify admin
+          required: true
+          type: string
+          name: POSTdata
+          in: body
+          description: required information to post a new doc
+          schema: 
+            required: 
+              - username
+              - comment
+            properties:
+              username:
+                type: string
+              comment:
+                type: string
+      responses:
+        200:
+          description: OK
+        401:
+          description: verify failed     
+        403:
+          description: insufficient permissions          
   /project/{pid}/recyclebin/{type}/:
     get:
       tags:
