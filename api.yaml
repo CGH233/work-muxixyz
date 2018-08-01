@@ -1,0 +1,682 @@
+swagger: '2.0'
+
+### information start ###
+info:
+  description: work.muxixyz.com API
+  version: 1.0.0
+  title: Work API
+  contact:
+    email: 1113713599@qq.com
+  #license
+### information end ###
+
+host: work.muxixyz.com
+basePath: /api/v1.0
+schemes:
+ - https
+ - http
+
+### tag start ###
+
+tags:
+  - name: folder
+	  description: 文件夹　
+
+  - name: file
+    description: 文件
+  
+  - name: doc
+	  description: 文档
+
+  - name: recyclebin
+    description: 回收站
+  
+  - name: plan
+    description: 进度
+
+### tag end ###
+
+### path start ###
+paths:
+  /project/{pid}/folder/{floor}/{foid}/get-info/{type}/:
+    get:
+      tags:
+        - folder
+      summary: get folder/file/doc number, folder/file/doc names, folder/file/docID 
+      description: return string and integer
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: pid
+          description: projectID
+          name: floor
+          description: the floor of folders
+          name: type
+          description: folder-1,file-2,doc-3 
+          required: true
+          type: integer
+      responses:
+        200:
+          description: OK
+          schema:
+            required:
+              - Count
+              - namelist
+              - idlist
+            properties:
+              Count:
+                type: integer
+              namelist:
+                type: array
+                item: 
+                  type: string 
+              idlist:
+                type: array 
+                item:
+                  type: integer
+  /project/{pid}/folder/{floor}/{foid}/new/:
+	  post:
+	    tags:
+		  - folder
+	    summary: build a new folder
+        description: admin can build a folder by this api
+        produces: 
+          - application/json
+        parameters:
+          - in: header
+            name: token
+            description: token to verify admin
+            required: true
+            type: string
+            name: POSTdata
+            in: body
+            description: required information to post a new folder
+            schema: 
+              required: 
+                - username
+                - foldername
+              properties:
+                username:
+                  type: string
+                foldername:
+                  type: string
+        responses:
+          200:
+            description: OK
+          401:
+            description: verify failed     
+          403:
+            description: insufficient permissions
+  /project/{pid}/folder/{floor}/{foid}/edit/:
+    post:
+      tags:
+        - folder
+      summary: edit folder name
+      description: change name
+      produces: 
+        - application/json
+      parameters:
+        - in: header
+          name: token
+          description: verify admin
+          required: true
+          type: string
+        - in: path
+          name: foid
+          description: folderID
+          name: pid
+          description: projectID
+          name: floor 
+          description: floor
+          required: true
+          type: integer
+        - name: POSTdata
+          in: body
+          description: change including
+          schema:
+            required:
+              - name
+            properties:
+              name:
+                type: string
+      responses:
+        200:
+          description: edit successfully
+        401:
+          description: verify failed
+        403:
+          description: insufficient permissions  
+  /project/{pid}/folder/{floor}/{foid}/move/:
+    post:
+      tags:
+        - folder
+      summary: move folder
+      description: move folder to another place
+      produces: 
+        - application/json
+      parameters:
+        - in: header
+          name: token
+          description: verify admin
+          required: true
+          type: string
+        - in: path
+          name: foid
+          description: folderID
+          name: pid
+          description: projectID
+          name: floor
+          description: floor
+          required: true
+          type: integer
+        - name: POSTdata
+          in: body
+          description: change including
+          schema:
+            required:
+              - foid
+              - floor
+            properties:
+              foid:
+                type: integer
+              floor:
+                type: integer 
+      responses:
+        200:
+          description: move successfully
+        401:
+          description: verify failed
+        403:
+          description: insufficient permissions 
+  /project/{pid}/folder/{floor}/move/several/:
+    post:
+      tags:
+        - folder
+      summary: move several folders
+      description: move folders to another place
+      produces: 
+        - application/json
+      parameters:
+        - in: header
+          name: token
+          description: verify admin
+          required: true
+          type: string
+        - in: path
+          name: floor
+          description: floor
+          name: pid
+          description: projectID
+          required: true
+          type: integer
+        - name: POSTdata
+          in: body
+          description: change including
+          schema:
+            required:
+              - foidlist
+              - foid
+              - floor
+            properties:
+              name: foidlist
+                type: array
+                item:
+                  type: integer
+              name: foid
+                type: integer
+              name: floor
+                type: integer
+      responses:
+        200:
+          description: move successfully
+        401:
+          description: verify failed
+        403:
+          description: insufficient permissions 
+  /project/{pid}/folder/{floor}/{foid}/delete/:
+    delete:
+      tags:
+        - folder
+      summary: delete a folder
+      description: receive a folderID,and move it into the recyclebin
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: foid
+          description: folderID
+          name: pid
+          description: projectID
+          name: floor
+          description: the floor of folder
+          required: true
+          type: integer
+        - in: header
+          name: token
+          description: token
+          required: true
+          type: string
+      responses:
+        200:
+          description: OK
+        401:
+          description: verify failed
+        403:
+          description: insufficient permissions
+  /project/{pid}/folder/{floor}/{foid}/delete/several/:
+    post:
+      tags:
+        - folder
+      summary: delete several folders
+      description: receive several folderIDs,and move them into the recyclebin
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: pid
+          description: projectID
+          name: floor
+          description: the floor of folder
+          name: foid
+          description: the folderID of cover 
+          required: true
+          type: integer
+        - in: header
+          name: token
+          description: token
+          required: true
+          type: string- name: POSTdata
+        - in: body
+          description: change including
+          schema:
+            required:
+              - foidlist
+            properties:
+              name: foidlist
+                type: array
+                item:
+                  type: integer       
+      responses:
+        200:
+          description: OK
+        401:
+          description: verify failed  
+        403:
+          description: insufficient permissions
+  /project/{pid}/folder/{floor}/{foid}/newdoc/:
+    post:
+	    tags:
+		  - doc
+	    summary: build a new doc
+        description: admin can build a doc by this api
+        produces: 
+          - application/json
+        parameters:
+          - in: header
+            name: token
+            description: token to verify admin
+            required: true
+            type: string
+            name: POSTdata
+            in: body
+            description: required information to post a new doc
+            schema: 
+              required: 
+                - username
+                - docname
+                - content
+              properties:
+                username:
+                  type: string
+                docname:
+                  type: string
+                content:
+                  type: string
+        responses:
+          200:
+            description: OK
+          401:
+            description: verify failed     
+          403:
+            description: insufficient permissions
+   /project/{pid}/folder/{floor}/{foid}/doc/{docid}/view/:
+    get:
+      tags:
+        - doc
+      summary: get docname, content, username 
+      description: return string and integer
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: pid
+          description: projectID
+          name: floor
+          description: the floor of folders
+          name: foid
+          description: folderID
+          name: docid
+          description: dcoID 
+          required: true
+          type: integer
+      responses:
+        200:
+          description: OK
+          schema:
+            required:
+              - docname
+              - content
+              - username
+            properties:
+              dconame:
+                type: string
+              content:
+                type: string 
+              username:  
+                type: string 
+  /project/{pid}/folder/{floor}/{foid}/doc/{docid}/edit/:
+    post:
+      tags:
+        - doc
+      summary: edit content
+      description: edit content
+      produces: 
+        - application/json
+      parameters:
+        - in: header
+          name: token
+          description: verify admin
+          required: true
+          type: string
+        - in: path
+          name: pid
+          description: projectID
+          name: foid
+          description: folderID
+          name: floor 
+          description: floor
+          name: docid
+          description: docID
+          required: true
+          type: integer
+        - name: POSTdata
+          in: body
+          description: change including
+          schema:
+            required:
+              - content
+            properties:
+              content:
+                type: string
+      responses:
+        200:
+          description: edit successfully
+        401:
+          description: verify failed
+        403:
+          description: insufficient permissions   
+  /project/{pid}/folder/{floor}/{foid}/doc/{docid}/move/:
+    post:
+      tags:
+        - doc
+      summary: move doc
+      description: move doc to another place
+      produces: 
+        - application/json
+      parameters:
+        - in: header
+          name: token
+          description: verify admin
+          required: true
+          type: string
+        - in: path
+          name: foid
+          description: folderID
+          name: pid
+          description: projectID
+          name: floor 
+          description: floor
+          name: docid
+          description: docID
+          required: true
+          type: integer
+        - name: POSTdata
+          in: body
+          description: change including
+          schema:
+            required:
+              - foid
+              - floor
+            properties:
+              foid:
+                type: integer
+              floor:
+                type: integer
+      responses:
+        200:
+          description: move successfully
+        401:
+          description: verify failed
+        403:
+          description: insufficient permissions 
+  /project/{pid}/folder/{floor}/{foid}/doc/move/several/:
+    post:
+      tags:
+        - doc
+      summary: move several documents
+      description: move documents to another place
+      produces: 
+        - application/json
+      parameters:
+        - in: header
+          name: token
+          description: verify admin
+          required: true
+          type: string
+        - in: path
+          name: foid
+          description: folderID
+          name: pid
+          description: projectID
+          name: floor
+          description: floor
+          required: true
+          type: integer
+        - name: POSTdata
+          in: body
+          description: change including
+          schema:
+            required:
+              - docidlist
+              - foid
+              - floor
+            properties:
+              name: docidlist
+                type: array
+                item:
+                  type: integer
+              name: foid
+                type: integer
+              name: floor
+                type: integer
+      responses:
+        200:
+          description: move successfully
+        401:
+          description: verify failed
+        403:
+          description: insufficient permissions  
+  /project/{pid}/folder/{floor}/{foid}/doc/{docid}/delete/:
+    delete:
+      tags:
+        - folder
+      summary: delete a folder
+      description: receive a folderID,and move it into the recyclebin
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: foid
+          description: folderID
+          name: pid
+          description: projectID
+          name: floor
+          description: the floor of folder
+          name: docid
+          description: docID
+          required: true
+          type: integer
+        - in: header
+          name: token
+          description: token
+          required: true
+          type: string
+      responses:
+        200:
+          description: OK
+        401:
+          description: verify failed
+        403:
+          description: insufficient permissions  
+  /project/{pid}/folder/{floor}/{foid}/doc/delete/several/:
+    post:
+      tags:
+        - doc
+      summary: delete several folders
+      description: receive several docIDs,and move them into the recyclebin
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: pid
+          description: projectID
+          name: floor
+          description: the floor of folder
+          name: foid
+          description: folderID
+          required: true
+          type: integer
+        - in: header
+          name: token
+          description: token
+          required: true
+          type: string- name: POSTdata
+        - in: body
+          description: change including
+          schema:
+            required:
+              - doclist
+            properties:
+              name: doclist
+                type: array
+                item:
+                  type: integer       
+      responses:
+        200:
+          description: OK
+        401:
+          description: verify failed  
+        403:
+          description: insufficient permissions    
+  /project/{pid}/folder/{floor}/{foid}/doc/{docid}/comment/:
+    post:
+	    tags:
+		  - doc
+	    summary: make a comment to a doc
+        description: admin can make a comment by this api
+        produces: 
+          - application/json
+        parameters:
+          - in: header
+            name: token
+            description: token to verify admin
+            required: true
+            type: string
+            name: POSTdata
+            in: body
+            description: required information to post a new doc
+            schema: 
+              required: 
+                - username
+                - comment
+              properties:
+                username:
+                  type: string
+                comment:
+                  type: string
+        responses:
+          200:
+            description: OK
+          401:
+            description: verify failed     
+          403:
+            description: insufficient permissions          
+  /project/{pid}/recyclebin/{type}/:
+    get:
+      tags:
+        - recyclebin
+      summary: get folder/file/doc number, folder/file/doc names, folder/file/docID 
+      description: return string and integer
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: pid
+          description: projectID
+          name: type
+          description: folder-1,file-2,doc-3 
+          required: true
+          type: integer
+      responses:
+        200:
+          description: OK
+          schema:
+            required:
+              - Count
+              - namelist
+              - idlist
+            properties:
+              Count:
+                type: integer
+              namelist:
+                type: array
+                item: 
+                  type: string 
+              idlist:
+                type: array 
+                item:
+                  type: integer
+  /project/{pid}/recyclebin/{type}/{id}/recover/:
+    post:
+      tags:
+        - recyclebin
+      summary: recover 
+      description: recover
+      produces: 
+        - application/json
+      parameters:
+        - in: header
+          name: token
+          description: verify admin
+          required: true
+          type: string
+        - in: path
+          name: pid
+          description: projectID
+          name: type 
+          description: folder-1,file-2,doc-3 
+          name: id
+          description: folder/file/doc ID
+          required: true
+          type: integer
+        - name: POSTdata
+          in: body
+          description: change including
+      responses:
+        200:
+          description: edit successfully
+        401:
+          description: verify failed
+        403:
+          description: insufficient permissions 
