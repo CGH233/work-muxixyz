@@ -20,17 +20,17 @@ schemes:
 
 tags:
   - name: folder
-	  description: 文件夹　
+    description: 文件夹　
 
   - name: file
     description: 文件
   
   - name: doc
-	  description: 文档
+    description: 文档
 
   - name: recyclebin
     description: 回收站
-
+    
 ### tag end ###
 
 ### path start ###
