@@ -30,7 +30,7 @@ tags:
 
   - name: recyclebin
     description: 回收站
-    
+
 ### tag end ###
 
 ### path start ###
@@ -73,9 +73,9 @@ paths:
                 item:
                   type: integer
   /project/{pid}/folder/{floor}/{foid}/new/:
-	post:
+    post:
       tags:
-	    - folder
+	      - folder
 	  summary: build a new folder
       description: admin can build a folder by this api
       produces: 
