@@ -1,4 +1,4 @@
-swagger: '2.0'
+wagger: '2.0'
 
 ### information start ###
 info:
@@ -35,7 +35,7 @@ tags:
 
 ### path start ###
 paths:
-  /project/{pid}/folder/{floor}/{foid}/get-info/{type}/:
+  /project/folder/get-info/:
     get:
       tags:
         - folder
@@ -44,12 +44,18 @@ paths:
       produces:
         - application/json
       parameters:
-        - in: path
-          name: pid
+        - name: "pid"
+          in: "query"
           description: projectID
-          name: floor
+          required: true
+          type: integer
+        - name: "floor"
+          in: "query"
           description: the floor of folders
-          name: type
+          required: true
+          type: integer
+        - name: type
+          in: "query" 
           description: folder-1,file-2,doc-3 
           required: true
           type: integer
@@ -57,21 +63,9 @@ paths:
         200:
           description: OK
           schema:
-            required:
-              - Count
-              - namelist
-              - idlist
-            properties:
-              Count:
-                type: integer
-              namelist:
-                type: array
-                item: 
-                  type: string 
-              idlist:
-                type: array 
-                item:
-                  type: integer
+            type: "array"
+            items:
+              $ref: "#/definitions/folder"
   /project/{pid}/folder/{floor}/{foid}/new/:
     post:
       tags:
@@ -86,7 +80,7 @@ paths:
           description: token to verify admin
           required: true
           type: string
-          name: POSTdata
+        - name: "POSTdata"
           in: body
           description: required information to post a new folder
           schema: 
@@ -122,8 +116,14 @@ paths:
         - in: path
           name: foid
           description: folderID
+          required: true
+          type: integer
+        - in: path  
           name: pid
           description: projectID
+          required: true
+          type: integer
+        - in: path  
           name: floor 
           description: floor
           required: true
@@ -161,8 +161,14 @@ paths:
         - in: path
           name: foid
           description: folderID
+          required: true
+          type: integer
+        - in: path
           name: pid
           description: projectID
+          required: true
+          type: integer
+        - in: path
           name: floor
           description: floor
           required: true
@@ -203,6 +209,9 @@ paths:
         - in: path
           name: floor
           description: floor
+          required: true
+          type: integer
+        - in: path
           name: pid
           description: projectID
           required: true
@@ -216,13 +225,13 @@ paths:
               - foid
               - floor
             properties:
-              name: foidlist
+              - name: foidlist
                 type: array
-                item:
+                items:
                   type: integer
-              name: foid
+              - name: foid
                 type: integer
-              name: floor
+              - name: floor
                 type: integer
       responses:
         200:
@@ -243,8 +252,14 @@ paths:
         - in: path
           name: foid
           description: folderID
+          required: true
+          type: integer
+        - in: path
           name: pid
           description: projectID
+          required: true
+          type: integer
+        - in: path
           name: floor
           description: the floor of folder
           required: true
@@ -273,8 +288,14 @@ paths:
         - in: path
           name: pid
           description: projectID
+          required: true
+          type: integer
+        - in: path
           name: floor
           description: the floor of folder
+          required: true
+          type: integer
+        - in: path
           name: foid
           description: the folderID of cover 
           required: true
@@ -283,14 +304,15 @@ paths:
           name: token
           description: token
           required: true
-          type: string- name: POSTdata
-        - in: body
+          type: string- 
+        - name: POSTdata
+          in: body
           description: change including
           schema:
             required:
               - foidlist
             properties:
-              name: foidlist
+              - name: foidlist
                 type: array
                 item:
                   type: integer       
@@ -315,7 +337,7 @@ paths:
           description: token to verify admin
           required: true
           type: string
-          name: POSTdata
+        - name: POSTdata
           in: body
           description: required information to post a new doc
           schema: 
@@ -337,7 +359,7 @@ paths:
           description: verify failed     
         403:
           description: insufficient permissions
-   /project/{pid}/folder/{floor}/{foid}/doc/{docid}/view/:
+  /project/{pid}/folder/{floor}/{foid}/doc/{docid}/view/:
     get:
       tags:
         - doc
@@ -349,10 +371,19 @@ paths:
         - in: path
           name: pid
           description: projectID
+          required: true
+          type: integer
+        - in: path
           name: floor
           description: the floor of folders
+          required: true
+          type: integer
+        - in: path
           name: foid
           description: folderID
+          required: true
+          type: integer
+        - in: path
           name: docid
           description: dcoID 
           required: true
@@ -389,10 +420,19 @@ paths:
         - in: path
           name: pid
           description: projectID
+          required: true
+          type: integer
+        - in: path
           name: foid
           description: folderID
+          required: true
+          type: integer
+        - in: path
           name: floor 
           description: floor
+          required: true
+          type: integer
+        - in: path
           name: docid
           description: docID
           required: true
@@ -430,10 +470,19 @@ paths:
         - in: path
           name: foid
           description: folderID
+          required: true
+          type: integer
+        - in: path
           name: pid
           description: projectID
+          required: true
+          type: integer
+        - in: path
           name: floor 
           description: floor
+          required: true
+          type: integer
+        - in: path
           name: docid
           description: docID
           required: true
@@ -474,8 +523,14 @@ paths:
         - in: path
           name: foid
           description: folderID
+          required: true
+          type: integer
+        - in: path
           name: pid
           description: projectID
+          required: true
+          type: integer
+        - in: path
           name: floor
           description: floor
           required: true
@@ -489,13 +544,13 @@ paths:
               - foid
               - floor
             properties:
-              name: docidlist
+              - name: docidlist
                 type: array
                 item:
                   type: integer
-              name: foid
+              - name: foid
                 type: integer
-              name: floor
+              - name: floor
                 type: integer
       responses:
         200:
@@ -516,10 +571,19 @@ paths:
         - in: path
           name: foid
           description: folderID
+          required: true
+          type: integer
+        - in: path
           name: pid
           description: projectID
+          required: true
+          type: integer
+        - in: path
           name: floor
           description: the floor of folder
+          required: true
+          type: integer
+        - in: path
           name: docid
           description: docID
           required: true
@@ -548,8 +612,14 @@ paths:
         - in: path
           name: pid
           description: projectID
+          required: true
+          type: integer
+        - in: path
           name: floor
           description: the floor of folder
+          required: true
+          type: integer
+        - in: path
           name: foid
           description: folderID
           required: true
@@ -558,14 +628,15 @@ paths:
           name: token
           description: token
           required: true
-          type: string- name: POSTdata
-        - in: body
+          type: string
+        - name: POSTdata
+          in: body
           description: change including
           schema:
             required:
               - doclist
             properties:
-              name: doclist
+              - name: doclist
                 type: array
                 item:
                   type: integer       
@@ -590,7 +661,7 @@ paths:
           description: token to verify admin
           required: true
           type: string
-          name: POSTdata
+        - name: POSTdata
           in: body
           description: required information to post a new doc
           schema: 
@@ -621,6 +692,9 @@ paths:
         - in: path
           name: pid
           description: projectID
+          required: true
+          type: integer
+        - in: path
           name: type
           description: folder-1,file-2,doc-3 
           required: true
@@ -661,8 +735,14 @@ paths:
         - in: path
           name: pid
           description: projectID
+          required: true
+          type: integer
+        - in: path
           name: type 
           description: folder-1,file-2,doc-3 
+          required: true
+          type: integer
+        - in: path
           name: id
           description: folder/file/doc ID
           required: true
@@ -677,3 +757,4 @@ paths:
           description: verify failed
         403:
           description: insufficient permissions 
+
