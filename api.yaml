@@ -20,7 +20,7 @@ tags:
   - name: recyclebin
     description: 回收站
 paths:
-  /project/folder/get-info/:
+  /project/{pid}/folder/{floor}/get-info/{type}/:
     get:
       tags:
         - folder
@@ -38,7 +38,7 @@ paths:
           schema:
             $ref: "#/definitions/info"
             
-  /project/folder/new/:
+  /project/{pid}/folder/{floor}/new/:
     post:
       tags:
         - folder
@@ -48,6 +48,8 @@ paths:
         - application/json
       parameters:
         - $ref: "#/parameters/token"
+        - $ref: "#/parameters/pid"
+        - $ref: "#/parameters/floor"
         - $ref: "#/parameters/data"
       responses:
         '200':
@@ -56,7 +58,7 @@ paths:
           description: verify failed
         '403':
           description: insufficient permissions
-  /project/folder/edit/:
+  /project/{pid}/folder/{floor}/{foid}/edit/:
     post:
       tags:
         - folder
@@ -77,7 +79,7 @@ paths:
           description: verify failed
         '403':
           description: insufficient permissions
-  /project/folder/move/:
+  /project/{pid}/folder/{floor}/{foid}/move/:
     post:
       tags:
         - folder
@@ -98,7 +100,7 @@ paths:
           description: verify failed
         '403':
           description: insufficient permissions
-  /project/folder/move/several/:
+  /project/{pid}/folder/{floor}/move/several/:
     post:
       tags:
         - folder
@@ -118,7 +120,7 @@ paths:
           description: verify failed
         '403':
           description: insufficient permissions
-  /project/folder/delete/:
+  /project/{pid}/folder/{floor}/{foid}/delete/:
     delete:
       tags:
         - folder
@@ -138,7 +140,7 @@ paths:
           description: verify failed
         '403':
           description: insufficient permissions
-  /project/folder/delete/several/:
+  /project/{pid}/folder/{floor}/delete/several/:
     delete:
       tags:
         - folder
@@ -159,7 +161,7 @@ paths:
           description: verify failed
         '403':
           description: insufficient permissions
-  /project/folder/newdoc/:
+  /project/{pid}/folder/{floor}/{foid}/newdoc/:
     post:
       tags:
         - doc
@@ -180,7 +182,7 @@ paths:
           description: verify failed
         '403':
           description: insufficient permissions
-  /project/folder/doc/view/:
+  /project/{pid}/folder/{floor}/{foid}/doc/{docid}/view/:
     get:
       tags:
         - doc
@@ -200,7 +202,7 @@ paths:
           description: OK
           schema:
             $ref: "#/definitions/doc"
-  /project/folder/doc/edit/:
+  /project/{pid}/folder/{floor}/{foid}/doc/{docid}/edit/:
     post:
       tags:
         - doc
@@ -222,7 +224,7 @@ paths:
           description: verify failed
         '403':
           description: insufficient permissions
-  /project/folder/doc/move/:
+  /project/{pid}/folder/{floor}/{foid}/doc/{docid}/move/:
     post:
       tags:
         - doc
@@ -244,7 +246,7 @@ paths:
           description: verify failed
         '403':
           description: insufficient permissions
-  /project/folder/doc/move/several/:
+  /project/{pid}/folder/{floor}/{foid}/doc/move/several/:
     post:
       tags:
         - doc
@@ -265,7 +267,7 @@ paths:
           description: verify failed
         '403':
           description: insufficient permissions
-  /project/folder/doc/delete/:
+  /project/{pid}/folder/{floor}/{foid}/doc/{docid}/delete/:
     delete:
       tags:
         - doc
@@ -286,7 +288,7 @@ paths:
           description: verify failed
         '403':
           description: insufficient permissions
-  /project/folder/doc/delete/several/:
+  /project/{pid}/folder/{floor}/{foid}/doc/delete/several/:
     delete:
       tags:
         - doc
@@ -307,7 +309,7 @@ paths:
           description: verify failed
         '403':
           description: insufficient permissions
-  /project/folder/doc/comment/:
+  /project/{pid}/folder/{floor}/{foid}/doc/{docid}/comment/:
     post:
       tags:
         - doc
@@ -340,7 +342,7 @@ paths:
           description: verify failed
         '403':
           description: insufficient permissions
-  /project/recyclebin/:
+  /project/{pid}/recyclebin/{type}/:
     get:
       tags:
         - recyclebin
@@ -357,7 +359,7 @@ paths:
           description: OK
           schema:
             $ref: "#/definitions/info"
-  /project/recyclebin/recover/:
+  /project/{pid}/recyclebin/{id}/recover/{type}/:
     post:
       tags:
         - recyclebin
@@ -370,7 +372,7 @@ paths:
         - $ref: "#/parameters/type"
         - $ref: "#/parameters/token"
         - name: id
-          in: query
+          in: path
           description: folder/file/doc ID
           required: true
           type: integer
@@ -384,19 +386,19 @@ paths:
 parameters:
   pid:
     name: pid
-    in: query
+    in: path
     description: projectID
     required: true
     type: integer
   floor:
     name: floor
-    in: query
+    in: path
     description: the floor of folders
     required: true
     type: integer
   type:
     name: type
-    in: query
+    in: path
     description: 'folder-1,file-2,doc-3'
     required: true
     type: integer
@@ -408,7 +410,7 @@ parameters:
     type: string
   foid:
     name: foid
-    in: query
+    in: path
     description: folderID
     required: true
     type: integer
@@ -459,7 +461,7 @@ parameters:
           type: string
   docid:
     name: docid
-    in: query    
+    in: path   
     description: dcoID
     required: true
     type: integer  
